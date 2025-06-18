@@ -1,5 +1,6 @@
 package baseball.model;
 
+import camp.nextstep.edu.missionutils.Randoms;
 import java.util.Objects;
 
 public class Number {
@@ -9,9 +10,17 @@ public class Number {
 
     private final int number;
 
-    public Number(int number) {
+    private Number(int number) {
         validateRange(number);
         this.number = number;
+    }
+
+    public static Number of(int number) {
+        return new Number(number);
+    }
+
+    public static Number generateRandomNumber() {
+        return of(Randoms.pickNumberInRange(MIN_NUMBER, MAX_NUMBER));
     }
 
     private void validateRange(int number) {

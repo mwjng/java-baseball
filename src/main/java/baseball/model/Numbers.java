@@ -1,5 +1,6 @@
 package baseball.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,20 +16,36 @@ public class Numbers {
         this.numbers = numbers;
     }
 
-    public static Numbers from(String inputNumber) {
+    public static Numbers ofNumbers(List<Number> numbers) {
+        return new Numbers(numbers);
+    }
+
+    public static Numbers ofRawString(String inputNumber) {
         try {
             List<Number> convertedNumbers = convertToNumbers(inputNumber);
-            return new Numbers(convertedNumbers);
+            return ofNumbers(convertedNumbers);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("숫자만 입력할 수 있습니다.");
         }
+    }
+
+    public static Numbers generateRandomNumbers() {
+        List<Number> generatedNumbers = new ArrayList<>();
+
+        while (generatedNumbers.size() < NUMBERS_SIZE) {
+            Number randomNumber = Number.generateRandomNumber();
+            if (!generatedNumbers.contains(randomNumber)) {
+                generatedNumbers.add(randomNumber);
+            }
+        }
+        return ofNumbers(generatedNumbers);
     }
 
     private static List<Number> convertToNumbers(String inputNumber) {
         String[] inputNumbers = inputNumber.split(SPLIT_DELIMITER);
         return Arrays.stream(inputNumbers)
                 .map(Integer::parseInt)
-                .map(Number::new)
+                .map(Number::of)
                 .toList();
     }
 
