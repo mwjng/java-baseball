@@ -11,4 +11,8 @@ public class TargetNumbers {
     public static TargetNumbers generate() {
         return new TargetNumbers(Numbers.generateRandomNumbers());
     }
+
+    public Result evaluate(Numbers numbers) {
+        return this.numbers.compareTo(numbers);
+    }
 }

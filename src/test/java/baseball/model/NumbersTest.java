@@ -1,8 +1,14 @@
 package baseball.model;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import java.util.stream.Stream;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class NumbersTest {
@@ -32,5 +38,24 @@ class NumbersTest {
         assertThatThrownBy(() -> Numbers.ofRawString(input))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("같은 수의 숫자가 중복되면 안됩니다.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideNumbersForComparison")
+    void 숫자_비교_테스트(Numbers targetNumbers, Numbers numbers, Result expectedResult) {
+        // when
+        Result result = targetNumbers.compareTo(numbers);
+
+        // then
+        assertThat(result).isEqualTo(expectedResult);
+    }
+
+    private static Stream<Arguments> provideNumbersForComparison() {
+        return Stream.of(
+                arguments(Numbers.ofRawString("123"), Numbers.ofRawString("123"), Result.of(3, 0)),
+                arguments(Numbers.ofRawString("123"), Numbers.ofRawString("132"), Result.of(1, 2)),
+                arguments(Numbers.ofRawString("123"), Numbers.ofRawString("456"), Result.of(0, 0)),
+                arguments(Numbers.ofRawString("123"), Numbers.ofRawString("231"), Result.of(0, 3))
+        );
     }
 }

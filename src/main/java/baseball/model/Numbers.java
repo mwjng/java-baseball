@@ -49,6 +49,25 @@ public class Numbers {
                 .toList();
     }
 
+    public Result compareTo(Numbers numbers) {
+        int strikeCount = 0;
+        int ballCount = 0;
+
+        for (int i = 0; i < NUMBERS_SIZE; i++) {
+            Number currentNumber = this.numbers.get(i);
+
+            if (numbers.hasNumberSamePosition(currentNumber, i)) {
+                strikeCount++;
+                continue;
+            }
+            if (numbers.hasNumber(currentNumber)) {
+                ballCount++;
+            }
+        }
+
+        return Result.of(strikeCount, ballCount);
+    }
+
     private void validate(List<Number> numbers) {
         validateLength(numbers);
         validateDuplicate(numbers);
@@ -70,5 +89,14 @@ public class Numbers {
         return numbers.size() != numbers.stream()
                 .distinct()
                 .count();
+    }
+
+    private boolean hasNumberSamePosition(Number number, int position) {
+        int index = this.numbers.indexOf(number);
+        return index == position;
+    }
+
+    private boolean hasNumber(Number number) {
+        return this.numbers.contains(number);
     }
 }
