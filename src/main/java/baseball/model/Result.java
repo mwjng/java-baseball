@@ -22,6 +22,14 @@ public class Result {
         return strike == WINNING_STRIKE_COUNT;
     }
 
+    public int getStrike() {
+        return this.strike;
+    }
+
+    public int getBall() {
+        return this.ball;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
