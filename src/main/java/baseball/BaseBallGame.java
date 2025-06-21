@@ -25,15 +25,16 @@ public class BaseBallGame {
     }
 
     private void playRound(TargetNumbers targetNumbers) {
-        Result result;
-        do {
-            outputView.showInputNumberMessage();
+        outputView.showInputNumberMessage();
 
-            Numbers numbers = getNumbersFromUserInput();
-            result = targetNumbers.evaluate(numbers);
+        Numbers numbers = getNumbersFromUserInput();
+        Result result = targetNumbers.evaluate(numbers);
 
-            outputView.showResult(result.getStrike(), result.getBall());
-        } while (result.isWin());
+        outputView.showResult(result.getStrike(), result.getBall());
+
+        if (!result.isWin()) {
+            playRound(targetNumbers);
+        }
     }
 
     private Numbers getNumbersFromUserInput() {
